@@ -5,6 +5,7 @@ const generateMarkdown = require("./utils/generateMarkdown.js");
 
 // Function that prompts user with questions
 const questions = () => {
+  data = [];
   const userQuestions = inquirer.prompt([
     {
       type: "input",
@@ -47,6 +48,11 @@ const questions = () => {
     },
     {
       type: "input",
+      message: "What are some tests you've done for your project?",
+      name: 'tests',
+    },
+    {
+      type: "input",
       message: "What is your Github username?",
       name: 'github',
     },
@@ -59,7 +65,34 @@ const questions = () => {
   return userQuestions
 }
 
-questions();
-
 // TODO: Create a function to write README file
-function writeToFile(fileName, data) {};
+// Function writes to README file
+function writeToFile(readMe) {
+  return new Promise((resolve, reject) => {
+    fs.writeFile("./generated/README.md", readMe, err => {
+      if (err) {
+        console.log("Error writing to file");
+        reject(err);
+        return;
+      }
+      resolve({
+        ok: true,
+        message: "README generated!"
+      })
+    })
+  })
+};
+
+questions()
+  .then(data => {
+    return generateMarkdown(data)
+  })
+  .then(readMe => {
+    return writeToFile(readMe)
+  })
+  .then(writeFileResponse => {
+    console.log(writeFileResponse.message)
+  })
+  .catch(err => {
+    console.log(err)
+  })
