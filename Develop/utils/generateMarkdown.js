@@ -8,14 +8,18 @@ function renderLicenseBadge(license) {
   return license.join(" ")
 }
 
-function renderObjectList(licenseObject) {
+//Appropriately renders every selected license into an list object for MD
+function renderListObject(licenseObject) {
   licenseObject = licenseObject.map(item => "* " + item)
   return licenseObject.join(" \n")
 }
 
-// TODO: Create a function to generate markdown for README
+//Generates a README using all the info from collected from index.js
 function generateMarkdown(data) {
+  //Reassigns values from incoming data for easier organization
   const {title, description, installation, usage, contribution, licenses, tests, github, email} = data;
+
+  //Returns the completed README file to index.js
   return `
   
 # ${title}
@@ -26,10 +30,9 @@ ${renderLicenseBadge(licenses)}
 ${description}
 
 ## Table of Contents
----------------------
 * [Installation](#installation)
 * [Usage](#usage)
-* [License](#license)
+* [Licenses](#licenses)
 * [Contribution](#contribution)
 * [Tests](#tests)
 * [Questions](#questions)
@@ -41,7 +44,8 @@ ${installation}
 ${usage}
 
 ## Licenses
-${renderObjectList(licenses)}
+This project falls under the following license(s): \n
+${renderListObject(licenses)}
 
 ## Contribution
 ${contribution}
@@ -57,4 +61,5 @@ Email: ${email}
 `;
 }
 
+//Exports generateMarkdown function for use in index.js
 module.exports = generateMarkdown;

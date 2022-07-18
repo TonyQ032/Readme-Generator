@@ -1,16 +1,16 @@
-// TODO: Include packages needed for this application
+// Packages needed for this application
 const fs = require("fs");
 const inquirer = require("inquirer");
 const generateMarkdown = require("./utils/generateMarkdown.js");
 
 // Function that prompts user with questions
 const questions = () => {
-  data = [];
   const userQuestions = inquirer.prompt([
     {
       type: "input",
       message: "What is the title of your project?",
       name: "title",
+      //Ensures the user has included a title for their README
       validate: userTitle => {
         if (userTitle) {
           return true;
@@ -65,34 +65,33 @@ const questions = () => {
   return userQuestions
 }
 
-// TODO: Create a function to write README file
 // Function writes to README file
 function writeToFile(readMe) {
   return new Promise((resolve, reject) => {
+    //Generates README into the 'generated' folder
     fs.writeFile("./generated/README.md", readMe, err => {
       if (err) {
         console.log("Error writing to file");
         reject(err);
         return;
       }
-      resolve({
-        ok: true,
-        message: "README generated!"
-      })
+      resolve()
     })
   })
 };
 
+//Runs the questions function, then executes the appropriate functions, one after another
 questions()
+  //Takes user input and generates the markdown for README
   .then(data => {
     return generateMarkdown(data)
   })
+  //Writes generated markdown and creates a completed README
   .then(readMe => {
-    return writeToFile(readMe)
+    writeToFile(readMe);
+    console.log("README successfully generated!");
   })
-  .then(writeFileResponse => {
-    console.log(writeFileResponse.message)
-  })
+  //Console.logs any errors caught along the way
   .catch(err => {
     console.log(err)
   })
