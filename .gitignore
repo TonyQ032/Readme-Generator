@@ -1,3 +1,4 @@
+# .gitignore generated using GitHub's own prebuilt Node .gitignore
 # Logs
 logs
 *.log
@@ -105,3 +106,4 @@ dist
 
 # MacOS files
 .DS_Store/
+.DS_Store
